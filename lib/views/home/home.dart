@@ -53,6 +53,14 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text('Objetos Reportados'),
         centerTitle: true,
+        actions:[
+          IconButton(
+              icon: Icon(Icons.person), 
+              onPressed: () {
+                Navigator.of(context).pushNamed('/userProfile');
+              },
+            ),
+        ]
       ),
       body: StreamBuilder<List<LostItem>>(
         stream: _loadLostItems(),
@@ -76,9 +84,9 @@ class _HomePageState extends State<HomePage> {
               return LostItemCard(
                 item: item,
                 onTap: () {
-                  // Aquí puedes manejar la acción al tocar la tarjeta, como navegar a una pantalla de detalles
+                  
                 },
-                currentUserEmail: currentUserEmail ?? '', // Pasas el correo electrónico del usuario actual, o una cadena vacía si es nulo.
+                currentUserEmail: currentUserEmail ?? '', 
               );
             },
           );
