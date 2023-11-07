@@ -5,6 +5,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class UserProfileScreen extends StatelessWidget {
   const UserProfileScreen({Key? key}) : super(key: key);
 
+  Future<void> signOut(BuildContext context) async {
+    await FirebaseAuth.instance.signOut();
+    // Navegar a la pantalla de registro después del cierre de sesión
+    Navigator.of(context).pushReplacementNamed('/register'); // Asegúrate de tener una ruta llamada '/registerScreen' en tu MaterialApp
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
@@ -31,13 +37,13 @@ class UserProfileScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-  title: Text('Perfil de Usuario'),
-  actions: [
-    CircleAvatar(
-      backgroundImage: NetworkImage(user.photoURL ?? 'https://via.placeholder.com/150'),
-    ),
-    SizedBox(width: 16), 
-  ],
+        title: Text('Perfil de Usuario'),
+        actions: [
+          CircleAvatar(
+            backgroundImage: NetworkImage(user.photoURL ?? 'https://via.placeholder.com/150'),
+          ),
+          SizedBox(width: 16), 
+        ],
       ),
       body: FutureBuilder(
         future: getUsername(user.uid),
@@ -58,7 +64,18 @@ class UserProfileScreen extends StatelessWidget {
                 Text('Nombre de usuario: $username', style: TextStyle(fontSize: 18)),
                 SizedBox(height: 8),
                 Text('Correo electrónico: ${user.email ?? 'Correo no disponible'}', style: TextStyle(fontSize: 18)),
-                // Botón de cierre de sesión...
+                SizedBox(height: 24),
+                ElevatedButton(
+                  onPressed: () => signOut(context),
+                  child: Text('Cerrar sesión'),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.red, // Color del botón
+                    onPrimary: Colors.white, // Color del texto
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                  ),
+                ),
               ],
             ),
           );
