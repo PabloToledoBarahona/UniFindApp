@@ -15,6 +15,7 @@ class _LostItemFormState extends State<LostItemForm> {
   String _title = '';
   String _description = '';
   String _location = '';
+  String _phoneNumber = '';
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +29,7 @@ class _LostItemFormState extends State<LostItemForm> {
           padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -36,9 +38,9 @@ class _LostItemFormState extends State<LostItemForm> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.all(15.0),
-                        child: (Text('Nombre del objeto')),
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: const Text('Nombre del objeto'),
                       ),
                       TextFormField(
                         decoration: InputDecoration(
@@ -52,9 +54,27 @@ class _LostItemFormState extends State<LostItemForm> {
                         validator: _controller.validateItemName,
                         onSaved: (value) => _title = value!,
                       ),
-                      const Padding(
-                        padding: EdgeInsets.all(15.0),
-                        child: (Text('Descripción')),
+                      
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: const Text('Número de teléfono'),
+                      ),
+                      TextFormField(
+                        decoration: InputDecoration(
+                          fillColor: const Color(0xFFECDFE4),
+                          filled: true,
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        validator: _controller.validatePhoneNumber,
+                        onSaved: (value) => _phoneNumber = value!,
+                      ),
+                      
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: const Text('Descripción'),
                       ),
                       TextFormField(
                         decoration: InputDecoration(
@@ -68,9 +88,10 @@ class _LostItemFormState extends State<LostItemForm> {
                         validator: _controller.validateItemDescription,
                         onSaved: (value) => _description = value!,
                       ),
-                      const Padding(
-                        padding: EdgeInsets.all(15.0),
-                        child: (Text('Lugar')),
+                      
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: const Text('Lugar'),
                       ),
                       TextFormField(
                         decoration: InputDecoration(
@@ -85,7 +106,10 @@ class _LostItemFormState extends State<LostItemForm> {
                             value!.isEmpty ? 'El lugar es obligatorio' : null,
                         onSaved: (value) => _location = value!,
                       ),
-                      const Padding(padding: EdgeInsets.only(top: 16)),
+                      
+                      Padding(
+                        padding: const EdgeInsets.only(top: 16),
+                      ),
                       Row(
                         children: [
                           ElevatedButton(
@@ -95,8 +119,7 @@ class _LostItemFormState extends State<LostItemForm> {
                             },
                             style: ElevatedButton.styleFrom(
                               foregroundColor: Colors.white,
-                              backgroundColor:
-                                  const Color.fromRGBO(129, 40, 75, 1),
+                              backgroundColor: const Color.fromRGBO(129, 40, 75, 1),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
@@ -112,8 +135,7 @@ class _LostItemFormState extends State<LostItemForm> {
                               },
                               style: ElevatedButton.styleFrom(
                                 foregroundColor: Colors.white,
-                                backgroundColor:
-                                    const Color.fromRGBO(129, 40, 75, 1),
+                                backgroundColor: const Color.fromRGBO(129, 40, 75, 1),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
@@ -123,6 +145,7 @@ class _LostItemFormState extends State<LostItemForm> {
                           ),
                         ],
                       ),
+                      
                       Padding(
                         padding: const EdgeInsets.only(top: 15),
                         child: ElevatedButton(
@@ -135,9 +158,8 @@ class _LostItemFormState extends State<LostItemForm> {
                                   title: _title,
                                   description: _description,
                                   location: _location,
-                                  imageUrl: imageUrl);
-
-                              // ignore: use_build_context_synchronously
+                                  imageUrl: imageUrl,
+                                  phoneNumber: _phoneNumber);
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text('Objeto Reportado'),
@@ -147,8 +169,7 @@ class _LostItemFormState extends State<LostItemForm> {
                           },
                           style: ElevatedButton.styleFrom(
                             foregroundColor: Colors.white,
-                            backgroundColor:
-                                const Color.fromRGBO(129, 40, 75, 1),
+                            backgroundColor: const Color.fromRGBO(129, 40, 75, 1),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),

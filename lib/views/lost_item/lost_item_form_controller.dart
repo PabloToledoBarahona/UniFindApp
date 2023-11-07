@@ -14,7 +14,6 @@ class LostItemFormController {
   final _auth = FirebaseAuth.instance;
   final CollectionReference collection = FirebaseFirestore.instance.collection('lost_items');
 
-
   File? get image => _image;
 
   Future<File?> getImage(ImageSource source) async {
@@ -48,7 +47,8 @@ class LostItemFormController {
       {required String title,
       required String description,
       required String location,
-      String? imageUrl}) async {
+      String? imageUrl,
+      required String phoneNumber}) async {
     final uid = _auth.currentUser!.uid;
     await _firestore.collection('lost_items').add({
       'name': title,
@@ -57,7 +57,8 @@ class LostItemFormController {
       'imageUrl': imageUrl,
       'timestamp': FieldValue.serverTimestamp(),
       'userId': uid,
-      'userEmail' : _auth.currentUser!.email!
+      'userEmail': _auth.currentUser!.email!,
+      'phoneNumber': phoneNumber,
     });
   }
 
@@ -75,10 +76,16 @@ class LostItemFormController {
     return null;
   }
 
-Stream<List<LostItem>> fetchLostItems() {
-  return collection.orderBy('timestamp', descending: true).snapshots().map((snapshot) {
-    return snapshot.docs.map((doc) => LostItem.fromDocument(doc)).toList();
-  });
-}
+  Stream<List<LostItem>> fetchLostItems() {
+    return collection.orderBy('timestamp', descending: true).snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) => LostItem.fromDocument(doc)).toList();
+    });
+  }
 
+  String? validatePhoneNumber(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Por favor ingrese su número de teléfono';
+    }
+    return null;
+  }
 }
