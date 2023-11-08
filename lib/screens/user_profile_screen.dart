@@ -1,14 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
 
 class UserProfileScreen extends StatelessWidget {
-  const UserProfileScreen({Key? key}) : super(key: key);
+  UserProfileScreen({Key? key}) : super(key: key);
+
+  final ImagePicker _picker = ImagePicker();
 
   Future<void> signOut(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
-    // Navegar a la pantalla de registro después del cierre de sesión
-    Navigator.of(context).pushReplacementNamed('/register'); // Asegúrate de tener una ruta llamada '/registerScreen' en tu MaterialApp
+    Navigator.of(context).pushReplacementNamed('/register'); 
+  }
+
+  Future<void> _selectImageFromGallery() async {
+    final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      // Aquí deberías subir la imagen seleccionada a Firebase Storage u otro servicio
+      // y luego actualizar el perfil del usuario con la nueva URL de la imagen.
+      // Esto podría requerir una integración con Firebase Storage y la actualización del usuario en la base de datos.
+      // Por ejemplo:
+      // await updateUserProfileImage(pickedFile.path); // Método hipotético para actualizar la imagen del perfil
+    }
   }
 
   @override
@@ -22,10 +36,8 @@ class UserProfileScreen extends StatelessWidget {
       );
     }
 
-    // Acceso a la instancia de Firestore
     final firestore = FirebaseFirestore.instance;
 
-    // Crear una función para obtener el nombre de usuario desde Firestore
     Future<String> getUsername(String uid) async {
       try {
         var userData = await firestore.collection('users').doc(uid).get();
@@ -39,10 +51,15 @@ class UserProfileScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Perfil de Usuario'),
         actions: [
-          CircleAvatar(
-            backgroundImage: NetworkImage(user.photoURL ?? 'https://via.placeholder.com/150'),
+          GestureDetector(
+            onTap: () {
+              _selectImageFromGallery();
+            },
+            child: CircleAvatar(
+              backgroundImage: NetworkImage(user.photoURL ?? 'https://via.placeholder.com/150'),
+            ),
           ),
-          SizedBox(width: 16), 
+          SizedBox(width: 16),
         ],
       ),
       body: FutureBuilder(
@@ -69,8 +86,8 @@ class UserProfileScreen extends StatelessWidget {
                   onPressed: () => signOut(context),
                   child: Text('Cerrar sesión'),
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.red, // Color del botón
-                    onPrimary: Colors.white, // Color del texto
+                    primary: Colors.red,
+                    onPrimary: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0),
                     ),
