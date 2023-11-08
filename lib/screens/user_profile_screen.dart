@@ -17,11 +17,6 @@ class UserProfileScreen extends StatelessWidget {
     final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
-      // Aquí deberías subir la imagen seleccionada a Firebase Storage u otro servicio
-      // y luego actualizar el perfil del usuario con la nueva URL de la imagen.
-      // Esto podría requerir una integración con Firebase Storage y la actualización del usuario en la base de datos.
-      // Por ejemplo:
-      // await updateUserProfileImage(pickedFile.path); // Método hipotético para actualizar la imagen del perfil
     }
   }
 
